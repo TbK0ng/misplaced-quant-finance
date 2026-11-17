@@ -1,0 +1,14 @@
+{
+  "name": "misplaced-quant-finance",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node site/build.mjs",
+    "preview": "node site/build.mjs && node site/serve.mjs"
+  },
+  "devDependencies": {
+    "highlight.js": "^11.10.0",
+    "katex": "^0.16.11",
+    "markdown-it": "^14.1.0"
+  }
+}
