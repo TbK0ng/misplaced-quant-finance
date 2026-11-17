@@ -487,7 +487,7 @@ function extractSections(src) {
   }
   return out.map((sec) => ({
     text: sec.text,
-    x: plainText(sec.buf.join(' ')).replace(/\s+/g, ' ').trim().slice(0, 120),
+    x: plainText(sec.buf.join(' ')).replace(/\s+/g, ' ').trim().slice(0, 3200),
   }));
 }
 

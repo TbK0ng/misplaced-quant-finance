@@ -158,19 +158,32 @@
     return s - t.length * 0.004;
   }
 
+  const esc = (s) =>
+    String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function snippet(text, q) {
+    if (!text) return '';
+    const t = text.toLowerCase();
+    const at = q.length > 1 ? t.indexOf(q) : -1;
+    const i = at >= 0 ? at : Math.max(0, t.indexOf(q.charAt(0)));
+    const start = Math.max(0, i - 24);
+    const body = text.slice(start, start + 96).replace(/\s+/g, ' ');
+    return (start > 0 ? '…' : '') + body + (text.length > start + 96 ? '…' : '');
+  }
+
   function render(list, q) {
     hits = list;
     active = -1;
     if (!list.length) {
-      results.innerHTML = `<div class="sr-empty">没有匹配「${q.replace(/[<>&]/g, '')}」的章节</div>`;
+      results.innerHTML = `<div class="sr-empty">没有匹配「${esc(q)}」的章节</div>`;
       return;
     }
     results.innerHTML = list
       .map(
         (h) => `<a class="sr-item" href="${h.href}">
   <span class="sr-c">第 ${String(h.c).padStart(2, '0')} 章</span>
-  <span class="sr-t">${h.t}</span>
-  ${h.x ? `<span class="sr-x">${h.x}</span>` : ''}
+  <span class="sr-t">${esc(h.t)}</span>
+  ${h.x ? `<span class="sr-x">${esc(snippet(h.x, q))}</span>` : ''}
 </a>`
       )
       .join('');
